@@ -69,10 +69,41 @@ Consider this alternate form of the same conversation:
 
 During this conversation, the operator only needs to have listened to the most-recent bit of dialogue to remember what they were doing. In other words, the operator needs no state. The ability to serve customers without keeping state would make it easier for the operator to serve multiple clients at the same time and maintain their sanity.
 
-In an HTTP invocation of an RPC the contents of a request and response are encoded in JSON, the *JavaScript Object Notation*. The encoding mechanism is so called because it is a way to write down how an object in a program written in the JavaScript language would look if you wrote it out (to the screen, to a piece of paper, etc). The process of writing out a representation of something in the memory of a computer program is known as serialization. 
+In an HTTP invocation of an RPC, the contents of a request and response are often encoded in JSON, the *JavaScript Object Notation*. The encoding mechanism is so called because it is a way to write down how an object in a program written in the JavaScript language would look if you wrote it out (to the screen, to a piece of paper, etc). The process of writing out a representation of something in the memory of a computer program is known as serialization. 
 
 The awesome thing about data encoded in JSON format is that the programmer can read in that data and then *deserialize* it, convert it from the written-out format back in to an in memory representation that can be used directly in a program.
 
 Woah!
 
 You will see just how powerful that convenience is as we tackle our development!
+
+Oftentimes local functions are meant to accomplish some task and perform some action -- write data to a file, make something appear on the screen. There are HTTP APIs that also accomplish tasks and perform actions. Some of the most famous web-based businesses publish HTTP APIs that perform actions like sending text messages (Twilio), computing a route between two waypoints (Here.com), transferring money between bank accounts (Stripe, Zelle), or authorizing users (PingOne, Duo). 
+
+However, a majority of people use HTTP APIs to make RPCs that simply access databases. In a way, these remote procedures that deliver data on demand *are* procedures. But, in a way, they aren't. Nevertheless, these databases are accessible by HTTP APIs and are wildly popular. Some of the most famous ones include the Facebook API, the Instagram API, the Google Maps API, and so on.
+
+
+### Making APIs Real and Tangible
+
+Just what does it look like, practically, to call an HTTP API. In fact it's not much different than loading a web page. You can technically make a RPC over HTTP using your web browser.
+
+Paste the following URL in your web browser:
+
+```
+https://api.sunrise-sunset.org/json?lat=39.1031&lng=-84.5120&date=2021-11-10
+```
+
+That URL invokes an HTTP API that will display information about the sunrise/sunset of any location on earth for any day in history. The HTTP API access above (called a *query*) contains all the arguments for the API's parameters. You don't even have to look that close to see them:
+
+The `lat=` after the `?` means that the next value in the string is an argument for the `lat` parameter (the latitude); the `lng=` after the `&` means that the next value in the string is an argument for the `lng` parameter (the longitude); and the `date=` means that the next value in the string is an argument for the `date` parameter. The `&`s separate the parameter/argument pairs. 
+
+Put all that information together and the query above is, essentially, asking the `sunrise-sunset.org` API for information about the sunrise/sunset on November 10th, 2021 in Cincinnati, OH. 
+
+![](./graphics/sunrise-sunset-example.png)
+
+The result of that RPC invocation is formatted in JSON and your web browser knows how to pretty print the results. So, each of the labels in blue are the names of fields and the values in pink are the corresponding data bits. The output indicates that the sunrise in Cincinnati in November of 2021 was at 12:21:41 PM (yes, *PM* -- they are encoded in GMT). 
+
+The amount of data accessible with these APIs is endless and it's really cool to see how things work!
+
+## Building Software in the Node Ecosystem
+
+Now that you know what APIs are and why you want to use them, let's use JavaScript to write a backend program that will access a particular API and display its results.
