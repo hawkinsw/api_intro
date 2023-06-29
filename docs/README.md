@@ -107,3 +107,123 @@ The amount of data accessible with these APIs is endless and it's really cool to
 ## Building Software in the Node Ecosystem
 
 Now that you know what APIs are and why you want to use them, let's use JavaScript to write a backend program that will access a particular API and display its results.
+
+No developer works alone -- we all write software that builds upon the tools and code that others have written before us. Whether we rely on the operating system, a library from another developer, a function written by "past us", we are all using code from another developer.
+
+Traditionally one of the hardest parts about software development has been finding and integrating these existing pieces of functionality into a new project. In the past you would have to go out and find some useful source code, add it to your project, determine how to reference that code from your code, and so on.
+
+Well, besides blowing open the opportunity to write server software to JavaScript developers, Node.js (and the other runtimes, too), revolutionized software engineering by introducing something called a package manager.
+
+> Note: There have been package managers around in other forms for a long, long time. However, the Node Package Manager (NPM) was the first one that really caught the attention of an entire developer community.
+
+Thanks to the Node.js Package Manager (NPM), you can issue a few simple commands and have access to any of a number of different libraries that have useful functionality for reuse.
+
+NPM has a repository ([online](https://www.npmjs.com)) where 
+
+1. developers can post packages for others to use; and
+2. developers can look for packages to use in their projects.
+
+When a developer wants to share some of their functionality with others, they simply publish their code to the repository. And then, when a developer wants to reuse someone's functionality, they can use a tool on their computer to download that package and have it immediately available for reuse.
+
+For the project we are writing, it will be useful to be able to download data from the network using HTTP -- after all, that *is* what calling an HTTP API is all about! Unfortunately, writing code to access resources over the Internet, especially ones hosted on a web server, is not easy. 
+
+Enter NPM -- there's a package for that: `got`.
+
+Before we can reach out and access that functionality, we will need to till the soil, so to speak.
+
+### Initializing a New Project
+
+In order for our software to easily reuse functionality posted in the NPM repository, we will create a project:
+
+```console
+npm init
+```
+
+`npm` will prompt you through the steps of creating a new package:
+
+```
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (scratch) 
+```
+
+I recommend calling your project `getsocial` (because we are going to use `G*i*tHub`) to access information about a developer's presence on social media. To do that, just type `getsocial` and press enter. The next question asks you to set the value for `getsocial`'s latest version.
+
+```console
+version: (1.0.0)
+```
+
+The value in `()`s is the *default* choice and if you want to accept that value (I recommend that you do), simply press return. You can complete the remainder of the `npm init` process by either accepting the defaults or setting meaningful customized values. The only item that you must set precisely is the `entry point` option -- simply set it to `index.js`. That is setting the name of the file that will contain the code that starts our application!
+
+The result of the initialization process is several new files. The most important one is the `package.json` file. It describes your package (for future you and, potentially, for others if you post it on the NPM repository eventually) but, crucially, also keeps track of the software that your package relies on from the NPM repository.
+
+If you look inside `package.json` that `npm init` created, you will see something like
+
+
+```json
+{
+  "name": "gitsocial",
+  "version": "1.0.0",
+  "description": "Getting social media information from GitHub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Will Hawkins",
+  "license": "GPL-3.0-or-later"
+}
+```
+
+The file should not contain anything surprising -- just exactly the things you just typed in when prompted by `npm init`. Now here comes the cool part.
+
+Let's set ourselves up so that `gitsocial` can reuse the functionality provided by the `got` library:
+
+```console
+npm install --save got
+```
+
+Something like 
+
+```
+up to date, audited 23 packages in 512ms
+
+10 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+```
+
+should have popped up on your screen. You will see a few things have changed. First, there is a new directory named `node_modules` in the current folder. That folder contains the code for the `got` library that you just installed. Second, a few new items were added to `package.json`:
+
+```json
+{
+  "name": "gitsocial",
+  "version": "1.0.0",
+  "description": "Getting social media information from GitHub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Will Hawkins",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "got": "^13.0.0"
+  }
+}
+```
+
+The new entries after `dependencies` reflect the that you told NPM that for your software to work, it *must* have access to the `got` package. Then, if you ever move to a new computer and start developing this software there, NPM will know which pieces of external code it will have to download from the NPM repository in order to make it possible for you to write more code! 
+
+How cool is that?
+
+NPM does *so* much more than what we've just described and you will learn all that functionality as your learn and grow as a developer.
+
+> Note: Whether you realize it or not you are already get expertise and experience with the JSON format. I am sure that you noticed that the `package.json` had the `.json` file extension and I bet you were wondering what that had to do with the JSON format we described above! Well, as you can see, the contents of the `package.json` file are just, well, JSON! How cool is that??
