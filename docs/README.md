@@ -21,7 +21,41 @@ In this tutorial we will use Node.js as the server runtime. The JavaScript progr
 
 ### Getting Started With Node
 
-TODO
+All the tools that you need to write software in JavaScript and execute it in Node are freely available on the Internet. Before going any further, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your Windows computer (versions of the tutorial for macOS and Linux are forthcoming). 
+
+To start, download the Node installer from their website, [nodejs.org](https://www.nodejs.org).
+
+![](./graphics/install/install1.png)
+
+Install the latest "LTS" version of Node. LTS stands for Long-Term Stable and describes a version of software that the Node developers guarantee they will support for an extended period of time by releasing security and stability updates, where needed.
+
+After the installer has finished downloading, click on the downloaded file to launch it.
+
+![](./graphics/install/install2.png)
+
+Depending on your browser and security settings, you may see a prompt warning you about executing programs downloaded from the Internet.
+
+![](./graphics/install/install3.png)
+
+During the installation process, accepting the defaults is usually the best approach. The only caveat is that you will need to accept the license agreement for the software.
+
+![](./graphics/install/install5.png)
+
+Be sure to check the box highlighted in green before clicking `Next`.
+
+For the remaining steps, accepting the defaults is the way to go:
+
+![](./graphics/install/install6.png)
+![](./graphics/install/install7.png)
+![](./graphics/install/install8.png)
+
+After clicking `Next`, Windows will prompt you to give the installer privileges to make changes to your hard drive. Unless you consent, the installer will not work.
+
+![](./graphics/install/install9.png)
+
+Congratulations! You made it!
+
+![](./graphics/install/install10.png)
 
 ## APIs
 
