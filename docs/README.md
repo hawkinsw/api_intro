@@ -142,11 +142,11 @@ The amount of data accessible with these APIs is endless and it's really cool to
 
 Now that you know what APIs are and why you want to use them, let's use JavaScript to write a backend program that will access a particular API and display its results.
 
-No developer works alone -- we all write software that builds upon the tools and code that others have written before us. Whether we rely on the operating system, a library from another developer, a function written by "past us", we are all using code from another developer.
+No developer works alone -- we all write software that builds upon the tools and code that others have written before us. Whether we rely on the operating system, a library from another developer, or a function written by "past us", we are all using code from another developer.
 
-Traditionally one of the hardest parts about software development has been finding and integrating these existing pieces of functionality into a new project. In the past you would have to go out and find some useful source code, add it to your project, determine how to reference that code from your code, and so on.
+Traditionally one of the hardest parts about software development has been finding and integrating these reusable pieces of functionality into a new project. In the past you would have to go out and find some useful source code, add it to your project, determine how to reference that code from your code, and so on.
 
-Well, besides blowing open the opportunity to write server software to JavaScript developers, Node.js (and the other runtimes, too), revolutionized software engineering by introducing something called a package manager.
+Well, besides blowing open the opportunity to write server software to JavaScript developers, Node.js (and the other runtimes, too), revolutionized software engineering by introducing something called a *package manager*.
 
 > Note: There have been package managers around in other forms for a long, long time. However, the Node Package Manager (NPM) was the first one that really caught the attention of an entire developer community.
 
@@ -161,19 +161,48 @@ When a developer wants to share some of their functionality with others, they si
 
 For the project we are writing, it will be useful to be able to download data from the network using HTTP -- after all, that *is* what calling an HTTP API is all about! Unfortunately, writing code to access resources over the Internet, especially ones hosted on a web server, is not easy. 
 
-Enter NPM -- there's a package for that: `got`.
+Enter NPM which hosts a package just for that: `got`.
 
 Before we can reach out and access that functionality, we will need to till the soil, so to speak.
 
 ### Initializing a New Project
 
-In order for our software to easily reuse functionality posted in the NPM repository, we will create a project:
+First things first: we will need a place to store our code -- a well-named folder is always a good idea -- and we will need to configure our IDE so that it knows we are working with code in that folder. We can do both of those at the same time with VS Code.
+
+Click on `Open Folder` under the `File` menu.
+
+![](./graphics/configure/configure1.png)
+
+Then navigate to the place on your hard drive where you would like to store code for this project.
+
+Click on the `New Folder` button to create a folder just for the code for this project.
+
+![](./graphics/configure/configure2.png)
+
+Then you will descend in to that newly created folder by double clicking (I know, it's odd that Windows does not automatically do that for you, but ..).
+
+![](./graphics/configure/configure3.png)
+
+Once you are in the newly created folder (which will have no contents), you can `Select Folder`:
+
+![](./graphics/configure/configure4.png)
+
+With that, have to (basically) instructed VS Code that the newly created folder is a "workspace" for your project. Our configuration and project building can now really pick up some speed!
+
+Now that we are starting to work with real code, we'll have to sometimes use another tool from VS Code -- the *terminal*. The terminal gives you access to an interface to issue commands (in a text format) to the computer. Working effectively in the terminal is real skill and one that developers spend lots of time practicing. Every platform (Windows, macOS, Linux) has individual pieces of software that will give you access to the terminal (a *terminal emulator*) and each of those packages has its pros and cons. What's cool about VS Code is that there is a (reasonably decent) built-in terminal emulator. In order to access the terminal emulator in VS Code, click on `New Terminal`.
+
+![](./graphics/configure/configure5.png)
+
+
+What appears is the terminal window and it's a place where you can enter commands for the operating system to execute.
+
+*Now* we can finally start to use the Node.js Package Manager! In order for our software to easily reuse functionality posted in the NPM repository, we will create a project. In the terminal window, type :
 
 ```console
 npm init
 ```
 
-`npm` will prompt you through the steps of creating a new package:
+and then press Enter. `npm` will prompt you through the steps of creating a new package:
 
 ```
 This utility will walk you through creating a package.json file.
@@ -188,6 +217,9 @@ save it as a dependency in the package.json file.
 Press ^C at any time to quit.
 package name: (scratch) 
 ```
+
+![](./graphics/configure/configure6.png)
+
 
 I recommend calling your project `getsocial` (because we are going to use `G*i*tHub`) to access information about a developer's presence on social media. To do that, just type `getsocial` and press enter. The next question asks you to set the value for `getsocial`'s latest version.
 
@@ -218,13 +250,25 @@ If you look inside `package.json` that `npm init` created, you will see somethin
 
 The file should not contain anything surprising -- just exactly the things you just typed in when prompted by `npm init`. Now here comes the cool part.
 
-Let's set ourselves up so that `gitsocial` can reuse the functionality provided by the `got` library:
+### `got` To Get A Package
+
+So far we have come a very long way, even though we haven't yet written any code. We have
+
+1. Learned *what* is an API;
+2. Learned *how* we access that API remotely;
+3. Learned *why* we want to use APIs;
+4. Configured the IDE; and
+5. Initialized a Node.js project.
+
+Time to take a break. 
+
+Just kidding, of course. Lets keep moving and set ourselves up so that `gitsocial` can reuse the functionality provided by the `got` library:
 
 ```console
 npm install --save got
 ```
 
-Something like 
+Something like
 
 ```
 up to date, audited 23 packages in 512ms
@@ -235,7 +279,11 @@ up to date, audited 23 packages in 512ms
 found 0 vulnerabilities
 ```
 
-should have popped up on your screen. You will see a few things have changed. First, there is a new directory named `node_modules` in the current folder. That folder contains the code for the `got` library that you just installed. Second, a few new items were added to `package.json`:
+should have popped up on your screen (red arrow).
+
+![](./graphics/configure/configure7a.png)
+
+You will see a few things have changed. First, there is a new directory named `node_modules` in the current folder (blue arrow). That folder contains the code for the `got` library that you just installed. Second, a few new items were added to `package.json`:
 
 ```json
 {
@@ -261,3 +309,22 @@ How cool is that?
 NPM does *so* much more than what we've just described and you will learn all that functionality as your learn and grow as a developer.
 
 > Note: Whether you realize it or not you are already get expertise and experience with the JSON format. I am sure that you noticed that the `package.json` had the `.json` file extension and I bet you were wondering what that had to do with the JSON format we described above! Well, as you can see, the contents of the `package.json` file are just, well, JSON! How cool is that??
+
+## Drumroll, please ...
+
+Now the moment that we have been waiting for ... writing some code. 
+
+Psych!
+
+We have to do one other bit of plumbing! Remember when we were running `npm init` and accepting all of its defaults? Well, one of those defaults was the name of the file where the main pieces of code for our project will go. By default, NPM wanted us to put the main pieces of the project's code in `index.js` and we agreed. So, we will need to create such a file so we can start adding JavaScript to it.
+
+Click on the `New File` icon and name the file `index.js`.
+
+![](./graphics/configure/configure7.png)
+
+If your screen looks (something) like 
+
+
+![](./graphics/configure/configure8.png)
+
+then you are ready to roll! Let's get started!
