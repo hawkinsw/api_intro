@@ -1,5 +1,29 @@
 # An Intro to Using HTTP APIs with Node
 
+## Our Mission
+
+It's great to be part of a community. GitHub is a great site for connecting with a *community* of other developers working on similar projects. GitHub lets you follow developers, star their repos, see what they are working on, etc. What it does *not* let you do, sadly, is communicate directly with another developer on the site (unless you are both working together on a PR, or issue, etc). 
+
+However, GitHub gives each developer the option to this their social media links on their GitHub home page so that other developers can contact them on those sites! Problem solved!
+
+![](./graphics/apis/github-profile.png)
+
+Here, my friend's Twitter handle is `@washedPatrick`. I can go on Twitter and message him using that handle.
+
+He can then go to my GitHub repository to find my Twitter handle so that he can respond:
+
+![](./graphics/apis/github-profile-hawkinsw.png)
+
+That's great and all, but we're developers and we would prefer to automate the process of finding out how to connect with our peers on social media. If only there were some way that we could query GitHub's database of profiles and "fetch" all the social media links for a particular user. 
+
+Well, have no fear, because there is!!
+
+In this tutorial we are going to study how we can use HTTP APIs, the "things" that give us access to information like we talked about above, by writing JavaScript code! 
+
+While we are not going to write an Internet server (what is called in today's modern language a *backend* [see below]), we are going to write an application that is analogous to it using the exact same tools and technologies.
+
+Let's go!
+
 ## Node
 
 ECMAScript, the formal name for the JavaScript programming language, finds its most common use in the web browser. Firefox, Chrome, Safari, Brave and all the other major web browsers have support for running programs written in JavaScript. Before JavaScript became the language it is today, most web sites were designed to be read -- their content was static and user interaction with the material was limited, at best. As JavaScript grew more powerful, JavaScript programs turned web sites into web apps. Because JavaScript programs can run the same way in *every* web browser (although that is the ideal, the truth is far different), many developers know the language well. In modern lingo, JavaScript programs that run in a user's web browser are known as frontend applications and developers who write those applications are known as frontend developers.
@@ -115,12 +139,14 @@ Oftentimes local functions are meant to accomplish some task and perform some ac
 
 However, a majority of people use HTTP APIs to make RPCs that simply access databases. In a way, these remote procedures that deliver data on demand *are* procedures. But, in a way, they aren't. Nevertheless, these databases are accessible by HTTP APIs and are wildly popular. Some of the most famous ones include the Facebook API, the Instagram API, the Google Maps API, and so on.
 
+In order to make a RPC to an HTTP API you need to know that API's *endpoint*. The *endpoint* is the address to which you connect in order to invoke the reusable functionality. For a REST HTTP API, the endpoint usually looks like any other URL.
+
 
 ### Making APIs Real and Tangible
 
 Just what does it look like, practically, to call an HTTP API. In fact it's not much different than loading a web page. You can technically make a RPC over HTTP using your web browser.
 
-Paste the following URL in your web browser:
+Paste the following endpoint in your web browser:
 
 ```
 https://api.sunrise-sunset.org/json?lat=39.1031&lng=-84.5120&date=2021-11-10
@@ -138,9 +164,35 @@ The result of that RPC invocation is formatted in JSON and your web browser know
 
 The amount of data accessible with these APIs is endless and it's really cool to see how things work!
 
+## Nuts and GitHub Bolts
+
+Returning to the task at hand -- we want to use a GitHub HTTP API in order to fetch the social media links for a particular user. Before we write a program in JavaScript to access this information, let's explore the API first and see what information is available.
+
+> Note: When you are writing software that accesses any API, it is usually a very good idea to explore the API by hand before you start writing code. Making one-off calls to reusable code (whether that is a local function call or an RPC accessible as an HTTP API), knowing well how the API works will help you eliminate uncertainty when you are debugging your code: Is what I wrote incorrect or is there something odd about the interface? 
+
+In order to access all the social media links for a particular user on GitHub, you can make a RPC to the HTTP API endpoint at
+
+`https://api.github.com/users/`*username*`/social_accounts`
+
+If you have a GitHub account and have registered your social media accounts, you can try it for yourself. My username on GitHub is `hawkinsw`. In order to retrieve all the social media accounts linked to my GitHub username you would call the GitHub API over HTTP by accessing the 
+
+```
+https://api.github.com/users/hawkinsw/social_accounts
+```
+
+![](./graphics/apis/github-hawkinsw-accounts.png)
+
+As before when we were experimenting with the Sunrise-Sunset API, the result of the RPC is JSON and the web browser is pretty printing it to make it easier to read.
+
+Because of the verbosity and self-documenting nature of JSON, you can almost read the data that we are after:
+
+> The user `hawkinsw` has `0`, `1` social media accounts linked to their username. The `0`th account is from Twitter and the URL is `https://twitter.com/hawkinsw`. The `1`th account is from a generic social media company and the user `hawkinsw` can be contacted at `https://bsky.app/profile/hawkinsw.bsky.social` on that platform.
+
+Experiment with the endpoint and make sure you see how it works. As we discussed above, having a good sense of how the API works will make it *that* much easier to access it programmatically in code.
+
 ## Building Software in the Node Ecosystem
 
-Now that you know what APIs are and why you want to use them, let's use JavaScript to write a backend program that will access a particular API and display its results.
+Now that you know what APIs are, why you want to use them and several examples of their functionality, let's use JavaScript to write a backend program that will access a particular API and display its results.
 
 No developer works alone -- we all write software that builds upon the tools and code that others have written before us. Whether we rely on the operating system, a library from another developer, or a function written by "past us", we are all using code from another developer.
 
@@ -328,3 +380,123 @@ If your screen looks (something) like
 ![](./graphics/configure/configure8.png)
 
 then you are ready to roll! Let's get started!
+
+In the `index.js` file, let's write a very simple program and see how to execute it using Node. 
+
+```javascript
+console.log(`Hello, World!`)
+```
+
+That line of code will produce the words `Hello, World!` on the screen. Do you believe me? You should! But, also, I don't blame you. So, let's verify! If we want to run the code that we have written and see what it produces, we have two options. 
+
+The first way to execute a piece of JavaScript that we have written is to us the UI. In the `Run` menu, click on `Start Debugging`. The first time that you execute a JavaScript program with Node.js in this way, VS Code will ask which runtime to use. Of course, we want Node.js, but VS Code does not know that. When you click `Start Debugging` you will see popup window asking how to execute the JavaScript in `index.js`. Click on `Node.js`. 
+
+```console
+Hello, World!
+```
+
+Wow! Just what we expected! What is the difference between `Start Debugging` and `Run Without Debugging`? Well, the former instructs Node.js to begin executing the program written in JavaScript and give you the opportunity to stop it at any moment and inspect its status using a very powerful piece of software known as the debugger. You will become an expert using the debugger as you work through your career. There are debuggers for (almost) every programming language and environment. The debugger for JavaScript built in to VSCode is reasonable!
+
+The second way to execute a piece of JavaScript that you have written is in the terminal. Open up a terminal window (remember how we do that?). Next, make sure that we are in the proper directory. Every time you issue a command using the terminal on the command line, it is executed in the context of a particular directory (i.e., a *folder*). The directory forming the context in the terminal is known as the *working directory*. Thanks to the working directory, any command executed can refer to files in that directory without having to give a complete *path*, or list of the folders encompassing a particular file with respect to the base of the hard drive. In order to see the names of the files that are "in" the working directory, we can execute `dir`. Give it a try:
+
+```console
+$ dir
+```
+
+The output will be (something like):
+```console
+index.js  node_modules  package.json  package-lock.json
+```
+
+What do you know? `index.js` (the file where we have the code for our program) is right there!
+
+To instruct Node.js to execute the JavaScript in that file, we can issue the following command:
+
+```console
+node index.js
+```
+
+and the output should be:
+
+
+```console
+Hello, World!
+```
+
+Let's do some more introductions. Make sure that the code in your `index.js` looks like:
+
+```JavaScript
+console.log(`Goodbye!`)
+console.log(`Hello, World!`)
+```
+
+Using your favorite technique for running JavaScript programs using Node, run the new program.
+
+```console.log
+Goodbye!
+Hello, World!
+```
+
+There are few important things to notice here:
+1. We are saying goodbye before we are saying hello! Odd!
+2. Node appears to be executing each of the JavaScript statements from the top of the file containing the program's source code to its bottom.
+
+Fix up the JavaScript program that we are writing so the it says hello and goodbye in the proper order.
+
+## Doing Real Work
+
+The format of the code in a JavaScript program is much different than in other languages. For instance, in C++, statements outside functions are not executable and all the code that can be executed needs to be in either a function or a class.
+
+> Note: That is not *entirely* true.
+
+The Node.js runtime will execute the statements in a JavaScript program from top to bottom and (essentially) skip any JavaScript that is in a function or class that is not specifically invoked. How wild is that?
+
+In order to keep our code nice and tidy, we will write all of our code in functions and then invoke a "main" function as the sole executable statement outside a function in `index.js`. That will help us in two weeks when we come back to this program and try to decipher our intentions.
+
+Because it will be the main point of departure for a program's execution, let's name the function `main`. Our function will take no parameters and it will return no values. 
+
+```JavaScript
+function main() { 
+
+}
+```
+
+is how to define a simple function in JavaScript that takes no parameters and returns no values.
+
+Put your updated `console.log` statements inside the `main` function:
+
+```JavaScript
+function main() { 
+  console.log(`Hello, World!`)
+  console.log(`Goodbye!`)
+}
+```
+
+Now, run your program:
+
+```console
+```
+
+Where did our output go? Well, we moved all the executable code into a function definition (something that is not executable) but then never invoked that function! Geez. We can easily fix that:
+
+that 
+
+```JavaScript
+function main() { 
+  console.log(`Hello, World!`)
+  console.log(`Goodbye!`)
+}
+
+main()
+```
+
+And now we get our functionality back:
+
+
+```console
+Hello, World!
+Goodbye!
+```
+
+## Build It And They Will Come
+
