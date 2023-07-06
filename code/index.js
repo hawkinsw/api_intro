@@ -1,9 +1,11 @@
-// copied from stack overflow:
-function fmt([fisrt, ...rest], ...tags) {
-    return values => rest.reduce((acc, curr, i) => {
+/*
+// Adapted (copied, really) from stack overflow:
+function deferred_template_string([head, ...tail], ...tags) {
+    return values => tail.reduce((acc, curr, i) => {
         return acc + values[tags[i]] + curr;
-    }, fisrt);
+    }, head);
 }
+*/
 
 /*
 const GITHUB_TEMPLATE = fmt`https://api.github.com/users/${'username'}/social_accounts`
@@ -25,11 +27,10 @@ function download_socialmedia_links() {
         console.log("Failure: " + error)
     })
 }
-*/
 
 import got from 'got'
 
-const GITHUB_TEMPLATE = fmt`https://api.github.com/users/${'username'}/social_accounts`
+const GITHUB_TEMPLATE = deferred_template_string`https://api.github.com/users/${'username'}/social_accounts`
 
 async function download_socialmedia_links(username) {
     const result = await got(GITHUB_TEMPLATE({ username: username })).json()
@@ -41,6 +42,23 @@ async function download_socialmedia_links(username) {
 
 async function main() {
     await download_socialmedia_links("hawkinsw")
+}
+
+main()
+*/
+
+function socialMediaEndpointGenerator(username) {
+  const root = "https://api.github.com/users/"
+  const stem = "/social_accounts"
+
+  const url = root + username + stem
+  root = "https://www.bsky.app"
+  return url
+}
+
+function main() {
+  const endpoint = socialMediaEndpointGenerator("hawkinsw")
+  console.log("Endpoint: " + endpoint)
 }
 
 main()

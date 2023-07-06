@@ -500,3 +500,199 @@ Goodbye!
 
 ## Build It And They Will Come
 
+Remember [back](#nuts-and-github-bolts) to the exploration that we did of the GitHub API for fetching the social media links for a particular user? The API endpoint had a certain pattern to it:
+
+```
+https://api.github.com/users/<username>/social_accounts
+```
+
+In order to call the HTTP API to get the links to the social media accounts for different users, we could just swap out `<username>` in the endpoint URL: 
+
+```
+https://api.github.com/users/hawkinsw/social_accounts
+https://api.github.com/users/kenballus/social_accounts
+https://api.github.com/users/dnjp/social_accounts
+```
+
+Let's write a function that we can use to create those URLs. We can use the resulting URLs when we want to call the API. By putting the functionality of creating the endpoint URL into a local function, if the format of it ever changes we will minimize our work!
+
+We will call our function `socialMediaEndpointGenerator`. What are the inputs that `socialMediaEndpointGenerator` needs to do its job? Only one: a username.
+
+You already know the basic boilerplate for writing a function -- we are only going to add to it the ability to accept a single parameter named `username`:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+
+}
+```
+
+Excellent! The code above declares the function and tells the language that its caller is expected to pass an argument to match with the `username` parameter. 
+
+We can break down the endpoint URL into a part that comes before the username and a part that comes after the username. We will put each of those in separate variables:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  var root = "https://api.github.com/users/"
+  var stem = "/social_accounts"
+}
+```
+
+`root` and `stem` are *variables*, named places in memory that can hold values that vary during the course of execution of your program. (*Note*: `username` is a variable but we are not required to type `var` in front of it) If you are coming to JavaScript with experience in languages that are strongly typed you might be wondering: "What types of values can `username`, `root` and `stem` hold?" A great question! JavaScript is a weakly typed language -- the variables do not have types. Declarations are simply there to introduce variable names to the compiler!
+
+We have all the pieces of the puzzle to create the endpoint URL -- we just need to *concatenate* (stick together) the three pieces: the `root`, the `username` and the `stem`:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  var root = "https://api.github.com/users/"
+  var stem = "/social_accounts"
+
+  var url = root + username + stem
+}
+```
+
+Even though we traditionally associate `+` with operations on numbers, JavaScript's lack of types mean that it has some niceties that make it easier to use in certain scenarios. Here is one of them! When JavaScript sees that you are attempting to "add" two (or more) strings together, it realizes that you are actually attempting to concatenate their contents!
+
+One last trick: Just how is the `url` that the function creates getting returned to the caller of the function? Well, the question contains a hint! We will just `return` that value:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  var root = "https://api.github.com/users/"
+  var stem = "/social_accounts"
+
+  var url = root + username + stem
+  return url
+}
+```
+
+So. Cool.
+
+Let's play around with it and see how it works. We will invoke it several times with different usernames and *log* the result to the screen (using our friend `console.log`):
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  var root = "https://api.github.com/users/"
+  var stem = "/social_accounts"
+
+  var url = root + username + stem
+  return url
+}
+
+function main() {
+  var endpoint = socialMediaEndpointGenerator("hawkinsw")
+  console.log("Endpoint: " + endpoint)
+}
+
+main()
+```
+
+```
+Endpoint: https://api.github.com/users/hawkinsw/social_accounts
+```
+
+Pretty cool! Play around with the code by calling the `socialMediaEndpointGenerator` function with different arguments and seeing what the function generates!
+
+We said that variables are meant to hold values in memory that change throughout the course of program execution. What do you notice about the values of `root` and `stem`? That's right: Once they are given their initial contents, their value remains *constant*, or unchanging, throughout execution. JavaScript gives us a way to help our fellow programmers keep their hands off of our variables whose values we know are not going to change throughout execution: Instead of declaring them with `var`, declare them with `const`:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  const root = "https://api.github.com/users/"
+  const stem = "/social_accounts"
+
+  const url = root + username + stem
+  return url
+}
+
+function main() {
+  const endpoint = socialMediaEndpointGenerator("hawkinsw")
+  console.log("Endpoint: " + endpoint)
+}
+
+main()
+```
+
+Everything still works, right? Exactly! If one of our coworkers comes along and things that they know better than us and want to change the `root` or the `stem` after they are given their initial values, JavaScript will yell:
+
+```JavaScript
+function socialMediaEndpointGenerator(username) {
+  const root = "https://api.github.com/users/"
+  const stem = "/social_accounts"
+
+  const url = root + username + stem
+
+  root = "https://www.bsky.app"
+  return url
+}
+
+function main() {
+  const endpoint = socialMediaEndpointGenerator("hawkinsw")
+  console.log("Endpoint: " + endpoint)
+}
+
+main()
+```
+
+```
+Process exited with code 1
+Uncaught TypeError TypeError: Assignment to constant variable.
+    at socialMediaEndpointGenerator (/home/hawkinsw/code/uc/api_intro/code/index.js:55:8)
+    at main (/home/hawkinsw/code/uc/api_intro/code/index.js:60:20)
+    at <anonymous> (/home/hawkinsw/code/uc/api_intro/code/index.js:64:1)
+    at run (internal/modules/esm/module_job:197:25)
+    --- async function ---
+    at runMainESM (internal/modules/run_main:51:21)
+    at executeUserEntryPoint (internal/modules/run_main:74:5)
+    at <anonymous> (internal/main/run_main_module:17:47)
+```
+
+What a fantastically helpful thing: JavaScript tells us, in no uncertain terms, (`Assignment to constant variable.`), that we did something wrong! Reassuring!
+
+## Get Down(load) With Your Bad Self
+
+With a function that generates the endpoint URL, we are now to the point where we can actually invoke the HTTP API! Finally!
+
+Based on our exploration from earlier, we know what to expect the result of the invocation to be: some JSON-formatted *blob* of data! (Check back [above](#nuts-and-github-bolts) to see some examples of the output.)
+
+Although it would be possible to use nothing other than "vanilla" JavaScript code to access resources on the Internet, why would we want to code something from scratch when there is already a great library out there that we can reuse? Exactly!
+
+[Remember](#got-to-get-a-package) how we used the Node.js Package Manager to download/install the got package? Now it's time to use it! Before we start exploring how to use got (and actually using it), feel free to browse through the [documentation](https://github.com/sindresorhus/got#readme). No, you do not need to understand all of it! Nor do you even need to understand some of it! The point is just to get comfortable with the process of starting to read documentation!
+
+In order to use a library like got we will need to *import* it. At the top of the `index.js` file, add the following *static import declaration*:
+
+```JavaScript
+import got from 'got'
+```
+
+This static import **declaration** is just like a variable declaration (that we discussed above) insofar as it introduces a specific name to the compiler so that we can use it. In this case, however, the name that we introduced, `got`, is used to access the reuseable functionality provided by the got library.
+
+There are a number of objects that the got library *exports*, makes available to developers who import it. One of those is called the default export. In the static import declaration above we have imported the default export from got. We have given it the *local* name `got` -- that's how we refer to it, no matter how it was named in the original code! 
+
+In the case of the got library, the default exported object is a function! We can call that function just like we called `socialMediaEndpointGenerator`.
+
+> Note: You are about to see two new keywords (`await` and `async`) that are part of the JavaScript language that make it possible to write *asynchronous* operations, operations that can occur at the same time as other operations without interference. Writing asynchronous JavaScript is an advanced topic that will not be covered in this tutorial. For now, believe we describe here and then study up on asynchronicity as you advance toward an expert-level understanding of JavaScript!
+
+Without additional delay, let's get to work actually writing the function that is going to call the GitHub API. We will call the function `invokeSocialMediaAPI`:
+
+```JavaScript
+function invokeSocialMediaAPI() {
+
+}
+```
+
+As before, what does the `invokeSocialMediaAPI` function need to be able to do its job? Bingo: The username:
+
+```JavaScript
+function invokeSocialMediaAPI(username) {
+
+}
+```
+
+We first need to know the endpoint URL -- fortunately we have a function that will generate that for us:
+
+```JavaScript
+function invokeSocialMediaAPI(username) {
+  const endpointUrl = socialMediaEndpointGenerator(username)
+}
+```
+
+TODO: Start here.
+
