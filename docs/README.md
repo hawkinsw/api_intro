@@ -591,7 +591,7 @@ Endpoint: https://api.github.com/users/hawkinsw/social_accounts
 
 Pretty cool! Play around with the code by calling the `socialMediaEndpointGenerator` function with different arguments and seeing what the function generates!
 
-We said that variables are meant to hold values in memory that change throughout the course of program execution. What do you notice about the values of `root` and `stem`? That's right: Once they are given their initial contents, their value remains *constant*, or unchanging, throughout execution. JavaScript gives us a way to help our fellow programmers keep their hands off of our variables whose values we know are not going to change throughout execution: Instead of declaring them with `var`, declare them with `const`:
+We said that variables are meant to hold values in memory that change throughout the course of program execution. What do you notice about the values of `root` and `stem`? That's right: Once they are given their initial contents, their value remains *constant*, or unchanging, throughout execution. JavaScript gives us a way to tell our fellow programmers keep their hands off of the variables whose values we know are not going to change throughout execution: Instead of declaring them with `var`, declare them with `const`:
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
@@ -610,7 +610,7 @@ function main() {
 main()
 ```
 
-Everything still works, right? Exactly! If one of our coworkers comes along and things that they know better than us and want to change the `root` or the `stem` after they are given their initial values, JavaScript will yell:
+Everything still works, right? Exactly! If one of our coworkers comes along and thinks that they know better than us and wants to change the `root` or the `stem` after they are given their initial values, JavaScript will yell:
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
@@ -650,11 +650,11 @@ What a fantastically helpful thing: JavaScript tells us, in no uncertain terms, 
 
 With a function that generates the endpoint URL, we are now to the point where we can actually invoke the HTTP API! Finally!
 
-Based on our exploration from earlier, we know what to expect the result of the invocation to be: some JSON-formatted *blob* of data! (Check back [above](#nuts-and-github-bolts) to see some examples of the output.)
+Based on our exploration from earlier, we know what to expect of the result of the invocation: some JSON-formatted *blob* of data! (Check back [above](#nuts-and-github-bolts) to see some examples of the output.)
 
 Although it would be possible to use nothing other than "vanilla" JavaScript code to access resources on the Internet, why would we want to code something from scratch when there is already a great library out there that we can reuse? Exactly!
 
-[Remember](#got-to-get-a-package) how we used the Node.js Package Manager to download/install the got package? Now it's time to use it! Before we start exploring how to use got (and actually using it), feel free to browse through the [documentation](https://github.com/sindresorhus/got#readme). No, you do not need to understand all of it! Nor do you even need to understand some of it! The point is just to get comfortable with the process of starting to read documentation!
+[Remember](#got-to-get-a-package) how we used the Node.js Package Manager to download/install the got package? Now it's time to use it! Before we start exploring how to use got (and actually using it), feel free to browse through the [documentation](https://github.com/sindresorhus/got#readme). No, you do not need to understand all of it! Nor do you even need to understand some of it! The point is just to get comfortable with the process of starting to read documentation! The most important skill you can learn as a developer (besides how to use your tools) is how to learn to read documentation.
 
 In order to use a library like got we will need to *import* it. At the top of the `index.js` file, add the following *static import declaration*:
 
@@ -662,15 +662,15 @@ In order to use a library like got we will need to *import* it. At the top of th
 import got from 'got'
 ```
 
-This static import **declaration** is just like a variable declaration (that we discussed above) insofar as it introduces a name so that we can use it. In this case, however, the name that we introduced, `got`, is used to access the reuseable functionality provided by the got library.
+This static import *declaration* is just like a variable declaration (that we discussed above) insofar as it introduces a name to the program that we can use for a particular purpose. In this case, however, the name that we introduced, `got`, is used to access the reusable functionality provided by the got library.
 
-There are a number of objects that the got library *exports*, makes available to developers who import it. One of those is called the default export. In the static import declaration above we have imported the default export from got. We have given it the *local* name `got`. When we want to use the library's default functionality we will use the name `got`. The name of the functionality in the original code matters not -- we use `got`.
+There are a number of objects that the got library *exports*, makes available to developers who import it. One of those is called the *default export*. In the static import declaration above we have imported the default export from got. We have given it the *local* name `got`. When we want to use the library's default functionality we will use the name `got`. The name given by the original developer of the functionality matters not -- we can reference it in our code using `got`.
 
-In the case of the got library, the default exported object is a function! Because it's a function, we can call that function just like we called `socialMediaEndpointGenerator`.
+In the case of the got library, the default exported object is a function! Because it's a function, we can call that function just we call any other function. In particular, we can call it like we called `socialMediaEndpointGenerator`.
 
-> Note: You are about to see two new keywords (`await` and `async`) that are part of the JavaScript language that make it possible to write *asynchronous* operations, operations that can occur at the same time as other operations without interfering. Writing asynchronous JavaScript is an advanced topic that will not be covered in this tutorial. For now, believe what we describe here and then study up on asynchronicity as you advance toward an expert-level understanding of JavaScript!
+> Note: You are about to see two new keywords (`await` and `async`) that are included in the JavaScript language to make it possible to write *asynchronous* programs, programs that can contain operations that can occur at the same time as other operations without interfering. Writing asynchronous JavaScript is an advanced topic that will not be covered in this tutorial. For now, believe what we describe here and then study up on asynchronicity as you advance toward an expert-level understanding of JavaScript!
 
-Without additional delay, let's get to work actually writing the function that is going to call the GitHub API. We will call the function `invokeSocialMediaAPI`:
+Without additional delay, let's get to work actually writing the function that is going to call the GitHub API. We will name the function `invokeSocialMediaAPI`:
 
 ```JavaScript
 function invokeSocialMediaAPI() {
@@ -678,7 +678,7 @@ function invokeSocialMediaAPI() {
 }
 ```
 
-As before, what does the `invokeSocialMediaAPI` function need to be able to do its job? Bingo: The username:
+As before, to design the interface to the function, we have to consider the things that `invokeSocialMediaAPI` needs to be able to do its job. So, just what are those things? Bingo: The username of the user about whom we want to learn their social media identities. To let the callers specify the username, add a parameter to the `invokeSocialMediaAPI` function:
 
 ```JavaScript
 function invokeSocialMediaAPI(username) {
@@ -686,7 +686,7 @@ function invokeSocialMediaAPI(username) {
 }
 ```
 
-Remember, the goal of our function is to invoke the HTTP API. Unsurprisingly, then, we will need to the URL of the endpoint.Fortunately we have a function that will generate that for us:
+Remember, the goal of our function is to invoke the HTTP API. Unsurprisingly, then, we will need the URL of the endpoint. Fortunately we have a function that will generate that for us:
 
 ```JavaScript
 function invokeSocialMediaAPI(username) {
@@ -714,7 +714,7 @@ async function invokeSocialMediaAPI(username) {
 }
 ```
 
-Awesome! With the code that we have currently written, we are *basically* done invoking the HTTP API and now we only have to work with the data that we generated.
+Awesome! With the code that we have currently written, we are *basically* done invoking the HTTP API and now we only have to work with the data that we generated. Here is the content of our program so far:
 
 
 ```JavaScript
@@ -741,15 +741,15 @@ await main()
 ```
 
 ## Hands Off My Propert(ies)
-When you run your expertly written program, nothing seems to happen. The key, of course, is the word "seems". Although you can't see it, many, *many* things happen in the background.
+When you run your expertly written program, nothing seems to happen. The key, of course, is the word "seems". Although you can't see it, many, *many* things happen in the background when you execute your program.
 
-Let's add a very simple statement to *log*, print out, some data and see the results of the HTTP API invocation.
+To prove that our program is doing something, let's add a very simple statement to *log*, print out, some data. We will log the results of the HTTP API invocation.
 
 In order to determine *what* to log, we will need to look a little more closely at the `results` object. In order to inspect the value of `result` while the program is running we will get to learn how to use something called the debugger. 
 
 As the name implies, the debugger is a tool that helps you, well, debug a program! If you execute a program and use the debugger to help you fix an error, you say that you are "running a program under the debugger." In order to run our code under the debugger, instead of clicking `Run` and then `Run Without Debugging`, start the program by clicking `Run` and then `Start Debugging`.
 
-Disappointing, right? The same behavior. Just wait, it's about to get awesome. We are going to add a *breakpoint*. A breakpoint is a spot in your code that, when reached by the debugger executing your program, freezes the program in its place and let's you explore its *state*, the values of the program's variables, the functions that are currently executing, and other details.
+Disappointing, right? The same behavior. Just wait, it's about to get awesome. We are going to add a *breakpoint*. A breakpoint is a programmer-defined spot in the code that, when reached by the debugger executing your program, freezes the program in its place and let's you explore the program's *state*, the values of the program's variables, the functions that are currently executing, and other details.
 
 We know that the statement
 
@@ -757,13 +757,13 @@ We know that the statement
   const results = await got(endpointUrl)
 ```
 
-is getting executed. So, let's add a breakpoint there and the debugger will stop the program when it's *about to execute that statement*. That last piece is important: A breakpoint on a statement stops the program just *before* that statement is going to execute.
+is getting executed. So, let's add a breakpoint there and the debugger will stop the program when it's *about to execute that statement*. That last piece is important: Applying a breakpoint to a statement stops the program just *before* that statement executes.
 
 To add a breakpoint, click in the "trough" next to the appropriate line of code (highlighted by the green arrow in the next image):
 
 ![](./graphics/code/code5.png)
 
-The light-red dot indicates that you are hovering in the proper spot. Set the breakpoint by clicking and the dot will become dark red which indicates the breakpoint is set:
+The light-red dot indicates that you are hovering in the proper spot. Set the breakpoint by clicking. When the dot becomes dark red you will know that the breakpoint is set:
 
 ![](./graphics/code/code6.png)
 
@@ -783,13 +783,13 @@ Now your environment should look something like:
 
 ![](./graphics/code/code9.png)
 
-If you look closely under the `Variables` heading in the left-hand side pane, you will see `results` and the debugger is showing you the contents of the variable *as they exist in real life while the program is frozen*! How amazing is that?!
+If you look closely under `VARIABLES` in the left-hand pane, you will see `results` and the debugger is showing you the contents of the variable *as they exist in real life while the program is frozen*! How amazing is that?!
 
 If you click the `>` next to `results` (highlighted in the image below by the red arrow), you will get to see more of the contents of `results`:
 
 ![](./graphics/code/code9a.png)
 
-Look at all the data in that variable! In JavaScript terms, `results` is an object and objects have properties (that can, in turn, be objects which have their own properties, and so on!). The properties of the `results` object are all the words nested under `results` and to the left of the `:` on each line. For instance, `results` has a property named `_eventsCount` and `isFromCache`. We are particularly interested in the property named `body` because that is where the object stored the results of our HTTP API invocation:
+Look at all the data in that variable! In JavaScript terms, `results` is an object and in JavaScript all objects have properties (those properties can, in turn, be objects which have their own properties, and so on!). The properties of the `results` object are all the words nested under `results` and to the left of the `:` on each line. For instance, `results` has a property named `_eventsCount` and `isFromCache`. We are particularly interested in the property named `body` because that is where the object stored the results of our HTTP API invocation:
 
 ![](./graphics/code/code10.png)
 
@@ -817,9 +817,11 @@ Now we are getting somewhere!
 
 ### Tips For Logging
 
-At this point in your programming career you have not written much code and your code has done logged that much data to the screen. Rest assured that as you grow, you will rely heavily on logging information to the screen during debugging (it's called `printf`-debugging). When you are solving a really, really nasty bug, your screen might be completely filled with output. If you generate logging data like we did above, you won't have an easy way to tell what that data means and the part of the program that generated it. 
+Depending on where you are in your programming career, you may or may not have written much code. If you are a new developer, rest assured that as you grow, you will rely heavily on logging information to the screen during debugging (it's called `printf`-debugging). And, if you are an old hand, I am sure you know what I am talking about! 
 
-When you log data, always make sure to put a label in front of it. In JavaScript, labeling your output is really easy. We can just concatenate (remember that term?) a label with the value we are logging:
+When you are solving a really, really nasty bug and using `printf`-debugging, your screen might get completely filled with logging output. If you generate logging data like we did above, you won't have an easy way to tell what that data means and the part of the program that generated it. 
+
+To prevent this problem before it starts, always make sure to put a label in front of the data that you log. In JavaScript, labeling your output is really easy. We can just concatenate (remember that term?) a label with the value we are logging:
 
 ```JavaScript
 console.log("The result of invoking the HTTP API is: " + results.body)
