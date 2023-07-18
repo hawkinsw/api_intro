@@ -1,10 +1,10 @@
-# An Intro to Using HTTP APIs with Node
+# An Intro to Using HTTP APIs with Node.js
 
 ## Our Mission
 
 It's great to be part of a community. GitHub is a great site for connecting with a *community* of other developers working on similar projects. GitHub lets you follow developers, star their repos, see what they are working on, etc. What it does *not* let you do, sadly, is communicate directly with another developer on the site (unless you are both working together on a PR, or issue, etc). 
 
-However, GitHub gives each developer the option to this their social media links on their GitHub home page so that other developers can contact them on those sites! Problem solved!
+However, GitHub gives each developer the option to list their social media links on their GitHub home page so that other developers can contact them on those sites! Problem solved!
 
 ![](./graphics/apis/github-profile.png)
 
@@ -20,11 +20,17 @@ Well, have no fear, because there is!!
 
 In this tutorial we are going to study how we can use HTTP APIs, the "things" that give us access to information like we talked about above, by writing JavaScript code! 
 
-While we are not going to write an Internet server (what is called in today's modern language a *backend* [see below]), we are going to write an application that is analogous to it using the exact same tools and technologies.
+Just what are we going to learn?
+
+1. How to install and use Node.js to write a JavaScript application that executes *outside* the web browser.
+1. How to install and use VS Code to write *and* debug JavaScript applications built for Node.js.
+2. The definition and value of software libraries (especially ones like HTTP APIs that do not even exist on our computers).
+3. Some very basic JavaScript.
+4. How to use a package manager to access/use code that another person has already written and debugged.
 
 Let's go!
 
-## Node
+## Node.js
 
 ECMAScript, the formal name for the JavaScript programming language, finds its most common use in the web browser. Firefox, Chrome, Safari, Brave and all the other major web browsers have support for running programs written in JavaScript. Before JavaScript became the language it is today, most web sites were designed to be read -- their content was static and user interaction with the material was limited, at best. As JavaScript grew more powerful, JavaScript programs turned web sites into web apps. Because JavaScript programs can run the same way in *every* web browser (although that is the ideal, the truth is far different), many developers know the language well. In modern lingo, JavaScript programs that run in a user's web browser are known as frontend applications and developers who write those applications are known as frontend developers.
 
@@ -43,15 +49,15 @@ Because JavaScript is standardized (as ECMAScript), it *should* be possible to w
 
 In this tutorial we will use Node.js as the server runtime. The JavaScript program that we are going to write is not server software, per se. However, it will be a useful approximation in so far as both the application that we write and server software execute on a server (as opposed to in the browser) and both usually require access to external resources.
 
-### Getting Started With Node
+### Getting Started With Node.js
 
-All the tools that you need to write software in JavaScript and execute it in Node are freely available on the Internet. Before going any further, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your Windows computer (versions of the tutorial for macOS and Linux are forthcoming). 
+All the tools that you need to write software in JavaScript and execute it in Node.js are freely available on the Internet. Before going any further, make sure that you have [VS Code](https://code.visualstudio.com/download) installed on your Windows computer (versions of the tutorial for macOS and Linux are forthcoming). 
 
-To start, download the Node installer from their website, [nodejs.org](https://www.nodejs.org).
+To start, download the Node.js installer from their website, [nodejs.org](https://www.nodejs.org).
 
 ![](./graphics/install/install1.png)
 
-Install the latest "LTS" version of Node. LTS stands for Long-Term Stable and describes a version of software that the Node developers guarantee they will support for an extended period of time by releasing security and stability updates, where needed.
+Install the latest "LTS" version of Node.js. LTS stands for Long-Term Stable and describes a version of software that the Node.js developers guarantee they will support for an extended period of time by releasing security and stability updates, where needed.
 
 After the installer has finished downloading, click on the downloaded file to launch it.
 
@@ -190,7 +196,7 @@ Because of the verbosity and self-documenting nature of JSON, you can almost rea
 
 Experiment with the endpoint and make sure you see how it works. As we discussed above, having a good sense of how the API works will make it *that* much easier to access it programmatically in code.
 
-## Building Software in the Node Ecosystem
+## Building Software in the Node.js Ecosystem
 
 Now that you know what APIs are, why you want to use them and several examples of their functionality, let's use JavaScript to write a backend program that will access a particular API and display its results.
 
@@ -200,7 +206,7 @@ Traditionally one of the hardest parts about software development has been findi
 
 Well, besides blowing open the opportunity to write server software to JavaScript developers, Node.js (and the other runtimes, too), revolutionized software engineering by introducing something called a *package manager*.
 
-> Note: There have been package managers around in other forms for a long, long time. However, the Node Package Manager (NPM) was the first one that really caught the attention of an entire developer community.
+> Note: There have been package managers around in other forms for a long, long time. However, the Node.js Package Manager (NPM) was the first one that really caught the attention of an entire developer community.
 
 Thanks to the Node.js Package Manager (NPM), you can issue a few simple commands and have access to any of a number of different libraries that have useful functionality for reuse.
 
@@ -381,7 +387,7 @@ If your screen looks (something) like
 
 then you are ready to roll! Let's get started!
 
-In the `index.js` file, let's write a very simple program and see how to execute it using Node. 
+In the `index.js` file, let's write a very simple program and see how to execute it using Node.js. 
 
 ```javascript
 console.log(`Hello, World!`)
@@ -430,7 +436,7 @@ console.log(`Goodbye!`)
 console.log(`Hello, World!`)
 ```
 
-Using your favorite technique for running JavaScript programs using Node, run the new program.
+Using your favorite technique for running JavaScript programs using Node.js, run the new program.
 
 ```console.log
 Goodbye!
@@ -439,7 +445,7 @@ Hello, World!
 
 There are few important things to notice here:
 1. We are saying goodbye before we are saying hello! Odd!
-2. Node appears to be executing each of the JavaScript statements from the top of the file containing the program's source code to its bottom.
+2. Node.js appears to be executing each of the JavaScript statements from the top of the file containing the program's source code to its bottom.
 
 Fix up the JavaScript program that we are writing so the it says hello and goodbye in the proper order.
 
@@ -815,6 +821,8 @@ Now if we execute our program (*outside* the debugger!), we will see the followi
 
 Now we are getting somewhere!
 
+The dot property accessor is useful for going into an object (`results`, in the case above) and accessing one of its properties (`body`, in the case above).
+
 ### Tips For Logging
 
 Depending on where you are in your programming career, you may or may not have written much code. If you are a new developer, rest assured that as you grow, you will rely heavily on logging information to the screen during debugging (it's called `printf`-debugging). And, if you are an old hand, I am sure you know what I am talking about! 
@@ -832,3 +840,227 @@ The result of invoking the HTTP API is: [{"provider":"twitter","url":"https://tw
 ```
 
 That is so much nicer and easier to read!
+
+## Objects Are *Everywhere*
+
+We are *so* close to having our application complete. That's exactly why *now*, when you are the most excited you've been about your code, is the perfect time to stop and talk about objects and learn how they relate to [JSON](#apis).
+
+In order to play with JavaScript objects, we will work with something called the Node.js REPL. A REPL is an application that will
+
+1. *r*ead some code that you type;
+1. *e*valuate that code;
+1. *p*rint the result; and then
+1. *l*oop back to step 1.
+
+In other words, it's like an interactive tool for writing code and getting immediate feedback. To get started, all you need to do is open a new terminal ([remember how you did that earlier?](#building-software-in-the-node-ecosystem)) and enter the command:
+
+```console
+$ node
+```
+
+When you do that, your console should look something like:
+
+```console
+$ node 
+Welcome to Node.js v19.3.0.
+Type ".help" for more information.
+> 
+```
+
+To get you comfortable with the REPL, start with something easy -- type, `console.log('Hello!');` and then press enter. You should see something like:
+
+```console
+> console.log('Hello!');
+Hello!
+undefined
+> 
+```
+
+Just what happened? Well, the REPL *r*ead your code, *e*valuated your code, *p*rinted the result (which is probably *not* what you think it is!) and the looped (that's why it is back to `>` prompting you for more JavaScript).
+
+I know what you are thinking: "Okay, smart guy, what *is* the result of that JavaScript?" The `Hello!` that was printed to the console is just a [side effect](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) of the statement. It's something that happened "along the way" while `console.log` was (ostensibly) generating some value to return. The value that `console.log` returns is the *real* result. If you come from a math background, you would think that every function generates a value (it would be absurd to think that $f(x) = x^2$ does not generate a value). But, oddly, if you thought that, you'd be wrong. Not every function in JavaScript has to return a value and `console.log` is one of those functions. So, the return value for a call to `console.log` is undefined and that's why you see the `undefined` in the REPL's output. Cool!
+
+> Until further notice, all the JavaScript shown here should be entered in the REPL!
+
+Okay, let's get back to objects. Let's create a very, very basic object:
+
+```console
+> let x = {}
+```
+
+Yes, *that* is how you create a basic object!
+
+Let's print it:
+
+```
+> console.log("x: " + x)
+```
+
+```console
+> console.log("x: " + x)
+x: [object Object]
+undefined
+> 
+```
+
+The REPL here is telling us that `x` is an object and that it does not know enough about the object to print it nicely! 
+
+> Make sure you remember why the `undefined` appears and make sure you know that it is *not* because `x` is undefined (because it's definitely defined!).
+
+Remember that objects have properties and, now that we have an object (`x`), we can now add some properties to it! In JavaScript, you don't have you declare properties -- you can just will them into existence:
+
+```console
+> x.favorite_number = 5
+```
+
+And now, if you want to access that property, what can we use? That's right, the dot property accessor:
+
+```console
+> console.log("X's favorite number is " + x.favorite_number + ".")
+```
+
+Just for fun, try to make a property in `x` that holds your favorite color. Call the property `favorite_color`.
+
+<details><summary>Answer</summary>
+```console
+> x.favorite_color = "blue"
+```
+</details>
+
+Great. Before going forward ... look back at two things:
+
+1. The components of the JSON acronym (especially the *object* part!); and
+2. The syntax used to create the empty `x` object we used a few lines above.
+
+As the name implies, JSON gives us a way to write down (*notat*ion, after all!) an object. So, let's use JSON to write down `x` as it exists now:
+
+```console
+> JSON.stringify(x)
+```
+
+```console
+> JSON.stringify(x)
+'{"favorite_number":5,"favorite_color":"blue"}'
+```
+
+Now *that* is cool! Can you see how the empty `{}`s that we had earlier now have something between them? And, check out how the properties we defined and the values that we gave those properties are now between the `{}`s!
+
+We found out how to *emit* some JSON, let's see if we can use that emitted JSON to recreate the `x` object without have to type out all those same commands again.
+
+Close down the REPL by pressing Ctrl and (while still holding it down) pressing `d`. (People sometimes write this is `Ctrl-D`.)
+
+> Further notice!
+
+And now, start the REPL again!
+
+```console
+$ node
+```
+
+> Fooled you -- we're back to typing in the REPL again *until further notice*.
+
+We stopped/started the REPL as a way to clear it's mind! To prove that our REPL is forgetful, let's print out `x`'s favorite color:
+
+```console
+> console.log("x's favorite color is " + x.favorite_color)  
+```
+
+```console
+> console.log("x's favorite color is " + x.favorite_color)  
+Uncaught ReferenceError: x is not defined
+```
+
+Confirmed! `x` is no longer defined.
+
+Now, for something really cool! We are going to type in the JSON that was emitted earlier and we will be able to bring `x` back from the Internet wasteland into which it had vanished:
+
+```console
+> let re_x = JSON.parse('{"favorite_number":5,"favorite_color":"blue"}')
+```
+
+And *now* try to print `re_x`'s favorite color:
+
+```console
+> console.log("re_x's favorite color is " + re_x.favorite_color)
+re_x's favorite color is blue
+```
+
+If that isn't the coolest thing!!
+
+What did we do? Well, we did something fancy: we *serialized* an object and then we *deserialized* an object. *Serialization* of an object is the process of writing out an object and its state (like the names and values of its properties, etc.) so that it can be recovered later. We used `JSON.stringify` to do that. On the other end, we *deserialized* an object, we took an object's serialized form and brought it back into existence in a program in a way that we could use it again in JavaScript!
+
+> *Note* Note that we serialized the object named `x` and brought it back as the object named `re_x`. That's perfectly okay! The name of an object in a program is meaningless for the content of the data. It is, *however*, very important that you choose good names for your objects so that other programmers know the purpose of those objects.
+
+> This is your final *further notice*. You can quit the REPL with `Ctrl-D`.
+
+## The Final Triumph!
+
+Okay, so, why did we talk about all that? Because the response that our program got from our invocation of the GitHub API is JSON and now we know enough JavaScript to be able to deserialize that JSON and use the property dot accessor to print something from it!
+
+Modify the `invokeSocialMediaAPI` function so that *return*s (or generates), the body:
+
+```javascript
+async function invokeSocialMediaAPI(username) {
+  const endpointUrl = socialMediaEndpointGenerator(username)
+  const results = await got(endpointUrl)
+  return results.body
+}
+```
+
+With that change, we can now use the contents of the body in `main` because it will be stored in the *local* variable in `main` named (coincidentally) `results`! Don't believe me? Well, try modifying `main` to look like
+
+```javascript
+async function main() {
+  const result = await invokeSocialMediaAPI("hawkinsw")
+  console.log("result: " + result)
+}
+```
+
+and run the program and see what it prints:
+
+```console
+results: [{"provider":"twitter","url":"https://twitter.com/hawkinsw"},{"provider":"generic","url":"https://bsky.app/profile/hawkinsw.bsky.social"}]
+```
+
+Yes!!
+
+Let's use our newfound expertise, to deserialize that object and store it in a variable named `socialUrls`:
+
+```javascript
+async function main() {
+  const result = await invokeSocialMediaAPI("hawkinsw")
+  let socialUrls = JSON.parse(result)
+}
+```
+
+## Celebration
+
+And now, the final celebration ... let's print the provider's name using the dot property accessor!
+
+```javascript
+async function main() {
+    const result = await invokeSocialMediaAPI("hawkinsw")
+    let socialUrls = JSON.parse(result)
+    console.log("provider's name: " + socialUrls[0].provider)
+}
+```
+
+```console
+provider's name: twitter
+```
+
+> Note: Because the value of the object that is serialized and returned by the GitHub API is actually an *array* of values (and not a single value), we have to use array access notation (`[]`). You will learn more about arrays as you grow more skilled with JavaScript!
+
+WOW! You did it!!
+
+## Conclusion: Wait. What Did I Do?
+
+So, *so* much! You 
+
+1. Learned about remote procedure calls, HTTP (stateless) APIs, and why they are useful.
+1. Learned about Node.js (and other JavaScript runtimes) that allow you to write JavaScript code that can be executed outside the web browser.
+1. Configured and used an environment where you can write and debug Node.js applications using VSCode.
+1. Interacted with the Node.js Package Manager and used it to install a library that made it easier for you to write your program.
+1. Learned how to use a REPL.
+1. Experimented with defining objects in JavaScript and setting/reading their parameters.
+1. Saw the value and potential of JSON for serializing and deserializing live JavaScripts so that they can be communicated to another program and used again.
