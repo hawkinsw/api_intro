@@ -538,21 +538,23 @@ We can break down the endpoint URL into a part that comes before the username an
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
-  var root = "https://api.github.com/users/"
-  var stem = "/social_accounts"
+  let root = "https://api.github.com/users/"
+  let stem = "/social_accounts"
 }
 ```
 
-`root` and `stem` are *variables*, named places in memory that can hold values that vary during the course of execution of your program. (*Note*: `username` is a variable but we are not required to type `var` in front of it) If you are coming to JavaScript with experience in languages that are strongly typed you might be wondering: "What types of values can `username`, `root` and `stem` hold?" A great question! JavaScript is a weakly typed language -- the variables do not have types. Declarations are simply there to introduce variable names to the compiler!
+`root` and `stem` are *variables*, named places in memory that can hold values that vary during the course of execution of your program. (*Note*: `username` is a variable but we are not required to type `let` in front of it) If you are coming to JavaScript with experience in languages that are strongly typed you might be wondering: "What types of values can `username`, `root` and `stem` hold?" A great question! JavaScript is a *weakly typed language*, the values that a variable can hold do not all have to be of the same ilk. In a weakly typed language, a single variable can, at various points during the execution of a JavaScript program, hold different kinds of values (e.g., a number, then a string, then a true/false). Declarations are simply there to introduce variable names to the compiler and tell neither the compiler nor the program anything about what values it contains!
+
+> In the interest of full disclosure, you can also introduce variables in a JavaScript program using the `var` keyword. Since the introduction of `let` to the JavaScript language in 2015, the use of `var` has (rightly) diminished and [most people](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/JavaScript#variable_declarations) believe that `let` is keyword to use to declare a variable.
 
 We have all the pieces of the puzzle to create the endpoint URL -- we just need to *concatenate* (stick together) the three pieces: the `root`, the `username` and the `stem`:
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
-  var root = "https://api.github.com/users/"
-  var stem = "/social_accounts"
+  let root = "https://api.github.com/users/"
+  let stem = "/social_accounts"
 
-  var url = root + username + stem
+  let url = root + username + stem
 }
 ```
 
@@ -562,10 +564,10 @@ One last trick: Just how is the `url` that the function creates getting returned
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
-  var root = "https://api.github.com/users/"
-  var stem = "/social_accounts"
+  let root = "https://api.github.com/users/"
+  let stem = "/social_accounts"
 
-  var url = root + username + stem
+  let url = root + username + stem
   return url
 }
 ```
@@ -576,15 +578,15 @@ Let's play around with it and see how it works. We will invoke it several times 
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {
-  var root = "https://api.github.com/users/"
-  var stem = "/social_accounts"
+  let root = "https://api.github.com/users/"
+  let stem = "/social_accounts"
 
-  var url = root + username + stem
+  let url = root + username + stem
   return url
 }
 
 function main() {
-  var endpoint = socialMediaEndpointGenerator("hawkinsw")
+  let endpoint = socialMediaEndpointGenerator("hawkinsw")
   console.log("Endpoint: " + endpoint)
 }
 
@@ -597,7 +599,7 @@ Endpoint: https://api.github.com/users/hawkinsw/social_accounts
 
 Pretty cool! Play around with the code by calling the `socialMediaEndpointGenerator` function with different arguments and seeing what the function generates!
 
-We said that variables are meant to hold values in memory that change throughout the course of program execution. What do you notice about the values of `root` and `stem`? That's right: Once they are given their initial contents, their value remains *constant*, or unchanging, throughout execution. JavaScript gives us a way to tell our fellow programmers keep their hands off of the variables whose values we know are not going to change throughout execution: Instead of declaring them with `var`, declare them with `const`:
+We said that variables are meant to hold values in memory that change throughout the course of program execution. What do you notice about the values of `root` and `stem`? That's right: Once they are given their initial contents, their value remains *constant*, or unchanging, throughout execution. JavaScript gives us a way to tell our fellow programmers keep their hands off of the variables whose values we know are not going to change throughout execution: Instead of declaring them with `let`, declare them with `const`:
 
 ```JavaScript
 function socialMediaEndpointGenerator(username) {

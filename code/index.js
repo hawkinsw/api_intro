@@ -17,7 +17,7 @@ async function invokeSocialMediaAPI(username) {
 
 async function main() {
     const result = await invokeSocialMediaAPI("hawkinsw")
-    let socialUrls = JSON.parse(result)
+    const socialUrls = JSON.parse(result)
     console.log("provider's name: " + socialUrls[0].provider)
 }
 
